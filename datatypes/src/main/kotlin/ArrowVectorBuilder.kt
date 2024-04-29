@@ -3,7 +3,7 @@ package io.hqew.kquery.datatypes
 import java.lang.IllegalStateException
 import org.apache.arrow.vector.*
 
-class ArrowVectorBuilder(val fieldVector: FieldVector) {
+class ArrowVectorBuilder(private val fieldVector: FieldVector) {
     fun set(i: Int, value: Any?) {
         when (fieldVector) {
             is VarCharVector -> {
