@@ -42,3 +42,16 @@ class LiteralString(val str: String) : LogicalExpr {
 }
 
 fun lit(value: String) = LiteralString(value)
+
+
+class LiteralLong(val n: Long): LogicalExpr {
+    override fun toField(input: LogicalPlan): Field {
+        return Field(n.toString(), ArrowTypes.Int64Type)
+    }
+
+    override fun toString(): String {
+        return n.toString()
+    }
+}
+
+fun lit(value: Long) = LiteralLong(value)

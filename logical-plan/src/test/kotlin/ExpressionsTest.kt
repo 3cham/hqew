@@ -20,4 +20,11 @@ class ExpressionsTest {
 
         assertEquals(litStr.toString(), "'namedColumn'")
     }
+
+    @Test
+    fun `test LiteralLong toString`() {
+        val litStr = lit(1e10.toLong())
+
+        assertEquals(litStr.toString(), "10000000000")
+    }
 }
