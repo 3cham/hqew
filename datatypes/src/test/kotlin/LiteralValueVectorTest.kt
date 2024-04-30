@@ -1,7 +1,5 @@
 package io.hqew.kquery.datatypes
 
-import org.apache.arrow.memory.RootAllocator
-import org.apache.arrow.vector.IntVector
 import org.junit.Test
 import org.junit.jupiter.api.TestInstance
 import kotlin.test.assertEquals

@@ -7,3 +7,4 @@ rootProject.name = "hqew"
 
 include("datatypes")
 include("datasource")
+include("logical-plan")
