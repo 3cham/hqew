@@ -16,4 +16,6 @@ object ArrowTypes {
     val FloatType = ArrowType.FloatingPoint(FloatingPointPrecision.SINGLE)
     val DoubleType = ArrowType.FloatingPoint(FloatingPointPrecision.DOUBLE)
     val StringType = ArrowType.Utf8()
+
+    fun getAll() = listOf(BooleanType, Int8Type, Int16Type, Int32Type, Int64Type, UInt8Type, UInt16Type, UInt32Type, UInt64Type, FloatType, DoubleType, StringType)
 }
