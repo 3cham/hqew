@@ -6,6 +6,15 @@ import org.apache.arrow.vector.*
 class ArrowVectorBuilder(private val fieldVector: FieldVector) {
     fun set(i: Int, value: Any?) {
         when (fieldVector) {
+            is BitVector -> {
+                when (value) {
+                    null -> fieldVector.setNull(i)
+                    true -> fieldVector.set(i, 1)
+                    false -> fieldVector.set(i, 0)
+                    is Number -> fieldVector.set(i, value.toInt())
+                    else -> throw IllegalStateException()
+                }
+            }
             is VarCharVector -> {
                 when (value) {
                     null -> fieldVector.setNull(i)
