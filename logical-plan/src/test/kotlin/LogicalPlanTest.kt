@@ -33,7 +33,7 @@ class LogicalPlanTest {
 
     @Test
     fun `test format logical plan`() {
-        val p = MockLogicalPlan(Schema(listOf<Field>(
+        val p = MockLogicalPlan(Schema(listOf(
             Field("1st", ArrowTypes.Int32Type),
             Field("2nd", ArrowTypes.StringType),
         )))
