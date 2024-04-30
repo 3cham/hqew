@@ -1,5 +1,7 @@
 package io.hqew.kquery.logical
 
+import io.hqew.kquery.datatypes.ArrowTypes
+import org.apache.arrow.vector.types.pojo.ArrowType
 import kotlin.test.assertEquals
 import org.junit.Test
 import org.junit.jupiter.api.TestInstance
@@ -40,5 +42,14 @@ class ExpressionsTest {
         val litStr = lit(1e10)
 
         assertEquals(litStr.toString(), "1.0E10")
+    }
+
+    @Test
+    fun `test CastExpr toString`() {
+        val litCast = cast(
+            lit(10), ArrowTypes.FloatType
+        )
+
+        assertEquals(litCast.toString(), "CAST(10 AS FloatingPoint(SINGLE))")
     }
 }

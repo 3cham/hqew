@@ -2,6 +2,7 @@ package io.hqew.kquery.logical
 
 import io.hqew.kquery.datatypes.ArrowTypes
 import io.hqew.kquery.datatypes.Field
+import org.apache.arrow.vector.types.pojo.ArrowType
 import java.sql.SQLException
 
 class Column(val name: String) : LogicalExpr {
@@ -80,3 +81,14 @@ class LiteralDouble(val n: Double): LogicalExpr {
 
 fun lit(value: Double) = LiteralDouble(value)
 
+class CastExpr(val expr: LogicalExpr, val dataType: ArrowType) : LogicalExpr {
+    override fun toField(input: LogicalPlan): Field {
+        return Field(expr.toField(input).name, dataType)
+    }
+
+    override fun toString(): String {
+        return "CAST($expr AS $dataType)"
+    }
+}
+
+fun cast(expr: LogicalExpr, dataType: ArrowType) = CastExpr(expr, dataType)
