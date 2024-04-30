@@ -92,3 +92,83 @@ class CastExpr(val expr: LogicalExpr, val dataType: ArrowType) : LogicalExpr {
 }
 
 fun cast(expr: LogicalExpr, dataType: ArrowType) = CastExpr(expr, dataType)
+
+abstract class BinaryExpr(
+    val name: String, val op: String, val l: LogicalExpr, val r: LogicalExpr
+) : LogicalExpr {
+    override fun toString(): String {
+        return "$l $op $r"
+    }
+}
+
+abstract class UnaryExpr(
+    val name: String, val op: String, val expr: LogicalExpr
+) : LogicalExpr {
+    override fun toString(): String {
+        return "$op $expr"
+    }
+}
+
+/**
+ * Representing a logical NOT
+ */
+class Not(expr: LogicalExpr) : UnaryExpr("not", "NOT", expr) {
+    override fun toField(input: LogicalPlan): Field {
+        return Field(name, ArrowTypes.BooleanType)
+    }
+}
+
+abstract class BooleanBinaryExpr(name: String, op: String, l: LogicalExpr, r: LogicalExpr) : BinaryExpr(name, op, l, r) {
+    override fun toField(input: LogicalPlan): Field {
+        return Field(name, ArrowTypes.BooleanType)
+    }
+}
+
+/** Logical expression representing a logical AND */
+class And(l: LogicalExpr, r: LogicalExpr) : BooleanBinaryExpr("and", "AND", l, r)
+
+/** Logical expression representing a logical OR */
+class Or(l: LogicalExpr, r: LogicalExpr) : BooleanBinaryExpr("or", "OR", l, r)
+
+/** Logical expression representing an equality (`=`) comparison */
+class Eq(l: LogicalExpr, r: LogicalExpr) : BooleanBinaryExpr("eq", "=", l, r)
+
+/** Logical expression representing an inequality (`!=`) comparison */
+class Neq(l: LogicalExpr, r: LogicalExpr) : BooleanBinaryExpr("neq", "!=", l, r)
+
+/** Logical expression representing a greater than (`>`) comparison */
+class Gt(l: LogicalExpr, r: LogicalExpr) : BooleanBinaryExpr("gt", ">", l, r)
+
+/** Logical expression representing a greater than or equals (`>=`) comparison */
+class GtEq(l: LogicalExpr, r: LogicalExpr) : BooleanBinaryExpr("gteq", ">=", l, r)
+
+/** Logical expression representing a less than (`<`) comparison */
+class Lt(l: LogicalExpr, r: LogicalExpr) : BooleanBinaryExpr("lt", "<", l, r)
+
+/** Logical expression representing a less than or equals (`<=`) comparison */
+class LtEq(l: LogicalExpr, r: LogicalExpr) : BooleanBinaryExpr("lteq", "<=", l, r)
+
+infix fun LogicalExpr.eq(rhs: LogicalExpr): LogicalExpr {
+    return Eq(this, rhs)
+}
+
+infix fun LogicalExpr.neq(rhs: LogicalExpr): LogicalExpr {
+    return Neq(this, rhs)
+}
+
+infix fun LogicalExpr.gt(rhs: LogicalExpr): LogicalExpr {
+    return Gt(this, rhs)
+}
+
+infix fun LogicalExpr.gteq(rhs: LogicalExpr): LogicalExpr {
+    return GtEq(this, rhs)
+}
+
+
+infix fun LogicalExpr.lt(rhs: LogicalExpr): LogicalExpr {
+    return Lt(this, rhs)
+}
+
+infix fun LogicalExpr.lteq(rhs: LogicalExpr): LogicalExpr {
+    return LtEq(this, rhs)
+}

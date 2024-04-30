@@ -52,4 +52,33 @@ class ExpressionsTest {
 
         assertEquals(litCast.toString(), "CAST(10 AS FloatingPoint(SINGLE))")
     }
+
+    @Test
+    fun `test UnaryExpr & BinaryExpr toString`() {
+        val l = lit(10.toLong())
+        val r = lit(11.toLong())
+
+        assertEquals(Not(l).toString(), "NOT 10")
+
+        assertEquals(And(l, r).toString(), "10 AND 11")
+        assertEquals(Or(l, r).toString(), "10 OR 11")
+
+        assertEquals(Eq(l, r).toString(), "10 = 11")
+        assertEquals(l.eq(r).toString(), "10 = 11")
+
+        assertEquals(l.neq(r).toString(), "10 != 11")
+        assertEquals(Neq(l, r).toString(), "10 != 11")
+
+        assertEquals(Lt(l, r).toString(), "10 < 11")
+        assertEquals(l.lt(r).toString(), "10 < 11")
+
+        assertEquals(LtEq(l, r).toString(), "10 <= 11")
+        assertEquals(l.lteq(r).toString(), "10 <= 11")
+
+        assertEquals(Gt(l, r).toString(), "10 > 11")
+        assertEquals(l.gt(r).toString(), "10 > 11")
+
+        assertEquals(GtEq(l, r).toString(), "10 >= 11")
+        assertEquals(l.gteq(r).toString(), "10 >= 11")
+    }
 }
