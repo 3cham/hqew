@@ -5,12 +5,19 @@ import org.junit.Test
 import org.junit.jupiter.api.TestInstance
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class ColumnTest {
+class ExpressionsTest {
 
     @Test
-    fun `test toString`() {
+    fun `test Column toString`() {
         val col = col("testColumn")
 
         assertEquals(col.toString(), "#testColumn")
+    }
+
+    @Test
+    fun `test LiteralString toString`() {
+        val litStr = lit("namedColumn")
+
+        assertEquals(litStr.toString(), "'namedColumn'")
     }
 }
