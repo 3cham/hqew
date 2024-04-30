@@ -27,4 +27,18 @@ class ExpressionsTest {
 
         assertEquals(litStr.toString(), "10000000000")
     }
+
+    @Test
+    fun `test LiteralFloat toString`() {
+        val litStr = lit(1e10.toFloat())
+
+        assertEquals(litStr.toString(), "1.0E10")
+    }
+
+    @Test
+    fun `test LiteralDouble toString`() {
+        val litStr = lit(1e10)
+
+        assertEquals(litStr.toString(), "1.0E10")
+    }
 }

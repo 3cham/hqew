@@ -55,3 +55,28 @@ class LiteralLong(val n: Long): LogicalExpr {
 }
 
 fun lit(value: Long) = LiteralLong(value)
+
+class LiteralFloat(val n: Float): LogicalExpr {
+    override fun toField(input: LogicalPlan): Field {
+        return Field(n.toString(), ArrowTypes.FloatType)
+    }
+
+    override fun toString(): String {
+        return n.toString()
+    }
+}
+
+fun lit(value: Float) = LiteralFloat(value)
+
+class LiteralDouble(val n: Double): LogicalExpr {
+    override fun toField(input: LogicalPlan): Field {
+        return Field(n.toString(), ArrowTypes.DoubleType)
+    }
+
+    override fun toString(): String {
+        return n.toString()
+    }
+}
+
+fun lit(value: Double) = LiteralDouble(value)
+
