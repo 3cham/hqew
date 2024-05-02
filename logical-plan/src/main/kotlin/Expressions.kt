@@ -164,11 +164,61 @@ infix fun LogicalExpr.gteq(rhs: LogicalExpr): LogicalExpr {
     return GtEq(this, rhs)
 }
 
-
 infix fun LogicalExpr.lt(rhs: LogicalExpr): LogicalExpr {
     return Lt(this, rhs)
 }
 
 infix fun LogicalExpr.lteq(rhs: LogicalExpr): LogicalExpr {
     return LtEq(this, rhs)
+}
+
+abstract class MathExpr(name: String, op: String, l: LogicalExpr, r: LogicalExpr) : BinaryExpr(name, op, l, r) {
+
+    override fun toField(input: LogicalPlan): Field {
+        return Field(name, l.toField(input).dataType)
+    }
+}
+
+class Add(l: LogicalExpr, r: LogicalExpr): MathExpr("add", "+", l, r)
+
+class Subtract(l: LogicalExpr, r: LogicalExpr): MathExpr("subtract", "-", l, r)
+
+class Multiply(l: LogicalExpr, r: LogicalExpr): MathExpr("mult", "*", l, r)
+
+class Divide(l: LogicalExpr, r: LogicalExpr): MathExpr("div", "/", l, r)
+
+class Modulus(l: LogicalExpr, r: LogicalExpr): MathExpr("mod", "%", l, r)
+
+
+infix fun LogicalExpr.add(rhs: LogicalExpr): LogicalExpr {
+    return Add(this, rhs)
+}
+
+infix fun LogicalExpr.subtract(rhs: LogicalExpr): LogicalExpr {
+    return Subtract(this, rhs)
+}
+
+infix fun LogicalExpr.mult(rhs: LogicalExpr): LogicalExpr {
+    return Multiply(this, rhs)
+}
+infix fun LogicalExpr.div(rhs: LogicalExpr): LogicalExpr {
+    return Divide(this, rhs)
+}
+
+infix fun LogicalExpr.mod(rhs: LogicalExpr): LogicalExpr {
+    return Modulus(this, rhs)
+}
+
+class Alias(val expr: LogicalExpr, val alias: String): LogicalExpr {
+    override fun toField(input: LogicalPlan): Field {
+        return Field(alias, expr.toField(input).dataType)
+    }
+
+    override fun toString(): String {
+        return "$expr as $alias"
+    }
+}
+
+infix fun LogicalExpr.alias(alias: String): Alias {
+    return Alias(this, alias)
 }

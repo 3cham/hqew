@@ -81,4 +81,30 @@ class ExpressionsTest {
         assertEquals(GtEq(l, r).toString(), "10 >= 11")
         assertEquals(l.gteq(r).toString(), "10 >= 11")
     }
+
+    @Test
+    fun `test MathExpr toString`() {
+        val l = lit(10.toLong())
+        val r = lit(11.toLong())
+
+        assertEquals(Add(l, r).toString(), "10 + 11")
+        assertEquals(l.add(r).toString(), "10 + 11")
+
+        assertEquals(Subtract(l, r).toString(), "10 - 11")
+        assertEquals(l.subtract(r).toString(), "10 - 11")
+
+        assertEquals(Multiply(l, r).toString(), "10 * 11")
+        assertEquals(l.mult(r).toString(), "10 * 11")
+
+        assertEquals(Divide(l, r).toString(), "10 / 11")
+        assertEquals(l.div(r).toString(), "10 / 11")
+
+        assertEquals(Modulus(l, r).toString(), "10 % 11")
+        assertEquals(l.mod(r).toString(), "10 % 11")
+
+        assertEquals(Add(l, r).alias("sumlr").toString(), "10 + 11 as sumlr")
+
+        assertEquals(Add(l, r).subtract(lit(5.toLong())).alias("expr").toString(), "10 + 11 - 5 as expr")
+    }
+
 }
