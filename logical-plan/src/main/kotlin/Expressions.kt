@@ -18,7 +18,7 @@ class Column(val name: String) : LogicalExpr {
 
 fun col(name: String) = Column(name)
 
-// fun max(expr: LogicalExpr) = Max(expr)
+fun max(expr: LogicalExpr) = Max(expr)
 
 
 class ColumnIndex(val i: Int) : LogicalExpr {
@@ -221,4 +221,57 @@ class Alias(val expr: LogicalExpr, val alias: String): LogicalExpr {
 
 infix fun LogicalExpr.alias(alias: String): Alias {
     return Alias(this, alias)
+}
+
+class ScalarFunction(val name: String, val args: List<LogicalExpr>, val returnType: ArrowType) : LogicalExpr {
+    override fun toField(input: LogicalPlan): Field {
+        return Field(name, returnType)
+    }
+
+    override fun toString(): String {
+        return "$name($args)"
+    }
+}
+
+
+abstract class AggregateExpr(val name: String, val expr: LogicalExpr): LogicalExpr {
+
+    override fun toField(input: LogicalPlan): Field {
+        return Field(name, expr.toField(input).dataType)
+    }
+
+    override fun toString(): String {
+        return "$name($expr)"
+    }
+}
+
+/** Logical expression representing the SUM aggregate expression. */
+class Sum(input: LogicalExpr) : AggregateExpr("SUM", input)
+
+/** Logical expression representing the MIN aggregate expression. */
+class Min(input: LogicalExpr) : AggregateExpr("MIN", input)
+
+/** Logical expression representing the MAX aggregate expression. */
+class Max(input: LogicalExpr) : AggregateExpr("MAX", input)
+
+/** Logical expression representing the AVG aggregate expression. */
+class Avg(input: LogicalExpr) : AggregateExpr("AVG", input)
+
+/** Logical expression representing the COUNT aggregate expression. */
+class Count(input: LogicalExpr) : AggregateExpr("COUNT", input) {
+
+    override fun toField(input: LogicalPlan): Field {
+        return Field("COUNT", ArrowTypes.UInt32Type)
+    }
+}
+
+class CountDistinct(input: LogicalExpr) : AggregateExpr("COUNT_DISTINCT", input) {
+
+    override fun toField(input: LogicalPlan): Field {
+        return Field("COUNT", ArrowTypes.UInt32Type)
+    }
+
+    override fun toString(): String {
+        return "COUNT(DISTINCT $expr)"
+    }
 }

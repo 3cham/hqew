@@ -107,4 +107,16 @@ class ExpressionsTest {
         assertEquals(Add(l, r).subtract(lit(5.toLong())).alias("expr").toString(), "10 + 11 - 5 as expr")
     }
 
+    @Test
+    fun `test AggregateExpr toString`() {
+        val col = col("column_A")
+
+        assertEquals(Max(col).toString(), "MAX(#column_A)")
+        assertEquals(Min(col).toString(), "MIN(#column_A)")
+        assertEquals(Sum(col).toString(), "SUM(#column_A)")
+        assertEquals(Avg(col).toString(), "AVG(#column_A)")
+        assertEquals(Count(col).toString(), "COUNT(#column_A)")
+        assertEquals(CountDistinct(col).toString(), "COUNT(DISTINCT #column_A)")
+    }
+
 }
