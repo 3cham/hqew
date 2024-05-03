@@ -3,6 +3,7 @@ import org.junit.Test;
 import org.junit.jupiter.api.TestInstance;
 import java.io.File
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ParquetDataSourceTest {
@@ -21,5 +22,25 @@ class ParquetDataSourceTest {
         val data = parquetSource.scan(listOf()).iterator()
 
         assertEquals(true, data.hasNext())
+    }
+
+    @Test
+    fun `test ParquetDataSource scan column`() {
+        val parquetSource = ParquetDataSource(
+            File("../testdata/", "alltypes_plain.parquet").absolutePath
+        )
+
+        val idData = parquetSource.scan(listOf("id")).iterator()
+        assert(idData.hasNext())
+        val batch = idData.next()
+
+        assertEquals(batch.fields[0].size(), 8)
+
+        val id = batch.fields[0]
+        val values = (0..id.size()).map{ id.getValue(it) ?: "null" }
+
+        assertEquals("4,5,6,7,2,3,0,1,null", values.joinToString(","))
+
+        assertFalse(idData.hasNext())
     }
 }
