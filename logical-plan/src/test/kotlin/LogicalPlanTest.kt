@@ -1,10 +1,12 @@
 package io.hqew.kquery.logical
 
+import io.hqew.kquery.datasource.CsvDataSource
 import io.hqew.kquery.datatypes.ArrowTypes
 import io.hqew.kquery.datatypes.Field
 import io.hqew.kquery.datatypes.Schema
 import org.junit.Test
 import org.junit.jupiter.api.TestInstance
+import java.io.File
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -42,5 +44,33 @@ class LogicalPlanTest {
         print(formattedPlan)
         assertTrue { formattedPlan.isNotEmpty() }
         assertEquals(formattedPlan, "1st,2nd\n")
+    }
+    @Test
+    fun `test format logical plan with csv datasource`() {
+
+        val dir = "../testdata"
+        val csvSource = CsvDataSource(
+            File(dir, "employee.csv").absolutePath,
+            null,
+            true,
+            1024,
+        )
+
+        val plan = Projection(
+            Selection(
+                Scan("employee.csv", csvSource, listOf()),
+                Eq(Column("state"), LiteralString("CO"))
+            ),
+            listOf(
+                Column("id"),
+                Column("first_name"),
+                Column("last_name"),
+            )
+        )
+
+        assertEquals(
+            format(plan),
+            "Projection: #id, #first_name, #last_name\n\tFilter: #state = 'CO'\n\t\tScan: employee.csv; projection=None\n"
+        )
     }
 }
