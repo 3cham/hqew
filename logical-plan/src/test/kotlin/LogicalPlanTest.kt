@@ -70,7 +70,7 @@ class LogicalPlanTest {
 
         assertEquals(
             format(plan),
-            "Projection: #id, #first_name, #last_name\n\tFilter: #state = 'CO'\n\t\tScan: employee.csv; projection=None\n"
+            "Projection: #id, #first_name, #last_name\n\tSelection: #state = 'CO'\n\t\tScan: employee.csv; projection=None\n"
         )
     }
 }

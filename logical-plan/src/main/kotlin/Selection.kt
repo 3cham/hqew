@@ -12,6 +12,6 @@ class Selection(val input: LogicalPlan, val expr: LogicalExpr) : LogicalPlan {
     }
 
     override fun toString(): String {
-        return "Filter: $expr"
+        return "Selection: $expr"
     }
 }
