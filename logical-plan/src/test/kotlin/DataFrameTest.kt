@@ -24,7 +24,6 @@ class DataFrameTest {
             .project(listOf(Column("id")))
 
         assertEquals(df.schema().fields.size, 1)
-        println(format(df.logicalPlan()))
         assertEquals(format(df.logicalPlan()), "Projection: #id\n\tSelection: #first_name = 'John'\n\t\tScan: employee.csv; projection=None\n")
     }
 
