@@ -54,6 +54,21 @@ class DataFrameTest {
         assertEquals(expected, actual)
     }
 
+    @Test
+    fun `aggregate query`() {
+
+        val df =
+            csv()
+                .aggregate(
+                    listOf(col("state")),
+                    listOf(Min(col("salary")), Max(col("salary")), Count(col("salary"))))
+
+        assertEquals(
+            "Aggregate: groupExpr=[#state], aggregateExpr=[MIN(#salary), MAX(#salary), COUNT(#salary)]\n" +
+                    "\tScan: employee.csv; projection=None\n",
+            format(df.logicalPlan()))
+    }
+
     private fun csv(): DataFrame {
         val csvSource = CsvDataSource(
             File("../testdata", "employee.csv").absolutePath,
