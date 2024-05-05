@@ -5,7 +5,7 @@ import io.hqew.kquery.datatypes.Schema
 
 interface DataSource {
 
-    fun schema(): Schema
+  fun schema(): Schema
 
-    fun scan(projection: List<String>): Sequence<RecordBatch>
+  fun scan(projection: List<String>): Sequence<RecordBatch>
 }
