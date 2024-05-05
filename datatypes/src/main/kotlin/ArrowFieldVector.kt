@@ -65,7 +65,13 @@ class ArrowFieldVector(private val field: FieldVector) : ColumnVector {
                     else -> String(bytes)
                 }
             }
-            else -> throw IllegalStateException()
+            is VarBinaryVector -> {
+                when (val bytes = field.get(i)) {
+                    null -> null
+                    else -> String(bytes)
+                }
+            }
+            else -> throw IllegalStateException("${field.field.fieldType.type} is not supported")
         }
     }
 
