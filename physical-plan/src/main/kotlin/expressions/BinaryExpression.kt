@@ -18,5 +18,5 @@ abstract class BinaryExpression(val l: Expression, val r: Expression) : Expressi
         return evaluate(ll, rr)
     }
 
-    abstract fun evaluate(ll: ColumnVector, rr: ColumnVector) : ColumnVector
+    abstract fun evaluate(l: ColumnVector, r: ColumnVector) : ColumnVector
 }
