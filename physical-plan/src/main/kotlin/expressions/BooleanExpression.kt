@@ -1,6 +1,7 @@
 package io.hqew.kquery.physical.expressions
 
 import io.hqew.kquery.datatypes.ArrowFieldVector
+import io.hqew.kquery.datatypes.ArrowTypes
 import io.hqew.kquery.datatypes.ColumnVector
 import io.hqew.kquery.datatypes.RecordBatch
 import org.apache.arrow.memory.RootAllocator
@@ -40,4 +41,127 @@ abstract class BooleanExpression(val l: Expression, val r: Expression): Expressi
     }
 
     abstract fun evaluate(l: Any?, r: Any?, arrowType: ArrowType): Boolean
+}
+
+class AndExpression(l: Expression, r: Expression): BooleanExpression(l, r) {
+    override fun evaluate(l: Any?, r: Any?, arrowType: ArrowType): Boolean {
+        return toBool(l) && toBool(r)
+    }
+}
+
+class OrExpression(l: Expression, r: Expression) : BooleanExpression(l, r) {
+    override fun evaluate(l: Any?, r: Any?, arrowType: ArrowType): Boolean {
+        return toBool(l) || toBool(r)
+    }
+}
+
+class EqExpression(l: Expression, r: Expression) : BooleanExpression(l, r) {
+    override fun evaluate(l: Any?, r: Any?, arrowType: ArrowType): Boolean {
+        return when (arrowType) {
+            ArrowTypes.Int8Type -> (l as Byte) == (r as Byte)
+            ArrowTypes.Int16Type -> (l as Short) == (r as Short)
+            ArrowTypes.Int32Type -> (l as Int) == (r as Int)
+            ArrowTypes.Int64Type -> (l as Long) == (r as Long)
+            ArrowTypes.FloatType -> (l as Float) == (r as Float)
+            ArrowTypes.DoubleType -> (l as Double) == (r as Double)
+            ArrowTypes.StringType -> toString(l) == toString(r)
+            else ->
+                throw IllegalStateException("Unsupported data type in comparison expression: $arrowType")
+        }
+    }
+}
+
+class NeqExpression(l: Expression, r: Expression) : BooleanExpression(l, r) {
+    override fun evaluate(l: Any?, r: Any?, arrowType: ArrowType): Boolean {
+        return when (arrowType) {
+            ArrowTypes.Int8Type -> (l as Byte) != (r as Byte)
+            ArrowTypes.Int16Type -> (l as Short) != (r as Short)
+            ArrowTypes.Int32Type -> (l as Int) != (r as Int)
+            ArrowTypes.Int64Type -> (l as Long) != (r as Long)
+            ArrowTypes.FloatType -> (l as Float) != (r as Float)
+            ArrowTypes.DoubleType -> (l as Double) != (r as Double)
+            ArrowTypes.StringType -> toString(l) != toString(r)
+            else ->
+                throw IllegalStateException("Unsupported data type in comparison expression: $arrowType")
+        }
+    }
+}
+
+class LtExpression(l: Expression, r: Expression) : BooleanExpression(l, r) {
+    override fun evaluate(l: Any?, r: Any?, arrowType: ArrowType): Boolean {
+        return when (arrowType) {
+            ArrowTypes.Int8Type -> (l as Byte) < (r as Byte)
+            ArrowTypes.Int16Type -> (l as Short) < (r as Short)
+            ArrowTypes.Int32Type -> (l as Int) < (r as Int)
+            ArrowTypes.Int64Type -> (l as Long) < (r as Long)
+            ArrowTypes.FloatType -> (l as Float) < (r as Float)
+            ArrowTypes.DoubleType -> (l as Double) < (r as Double)
+            ArrowTypes.StringType -> toString(l) < toString(r)
+            else ->
+                throw IllegalStateException("Unsupported data type in comparison expression: $arrowType")
+        }
+    }
+}
+
+class LtEqExpression(l: Expression, r: Expression) : BooleanExpression(l, r) {
+    override fun evaluate(l: Any?, r: Any?, arrowType: ArrowType): Boolean {
+        return when (arrowType) {
+            ArrowTypes.Int8Type -> (l as Byte) <= (r as Byte)
+            ArrowTypes.Int16Type -> (l as Short) <= (r as Short)
+            ArrowTypes.Int32Type -> (l as Int) <= (r as Int)
+            ArrowTypes.Int64Type -> (l as Long) <= (r as Long)
+            ArrowTypes.FloatType -> (l as Float) <= (r as Float)
+            ArrowTypes.DoubleType -> (l as Double) <= (r as Double)
+            ArrowTypes.StringType -> toString(l) <= toString(r)
+            else ->
+                throw IllegalStateException("Unsupported data type in comparison expression: $arrowType")
+        }
+    }
+}
+
+class GtExpression(l: Expression, r: Expression) : BooleanExpression(l, r) {
+    override fun evaluate(l: Any?, r: Any?, arrowType: ArrowType): Boolean {
+        return when (arrowType) {
+            ArrowTypes.Int8Type -> (l as Byte) > (r as Byte)
+            ArrowTypes.Int16Type -> (l as Short) > (r as Short)
+            ArrowTypes.Int32Type -> (l as Int) > (r as Int)
+            ArrowTypes.Int64Type -> (l as Long) > (r as Long)
+            ArrowTypes.FloatType -> (l as Float) > (r as Float)
+            ArrowTypes.DoubleType -> (l as Double) > (r as Double)
+            ArrowTypes.StringType -> toString(l) > toString(r)
+            else ->
+                throw IllegalStateException("Unsupported data type in comparison expression: $arrowType")
+        }
+    }
+}
+
+class GtEqExpression(l: Expression, r: Expression) : BooleanExpression(l, r) {
+    override fun evaluate(l: Any?, r: Any?, arrowType: ArrowType): Boolean {
+        return when (arrowType) {
+            ArrowTypes.Int8Type -> (l as Byte) >= (r as Byte)
+            ArrowTypes.Int16Type -> (l as Short) >= (r as Short)
+            ArrowTypes.Int32Type -> (l as Int) >= (r as Int)
+            ArrowTypes.Int64Type -> (l as Long) >= (r as Long)
+            ArrowTypes.FloatType -> (l as Float) >= (r as Float)
+            ArrowTypes.DoubleType -> (l as Double) >= (r as Double)
+            ArrowTypes.StringType -> toString(l) >= toString(r)
+            else ->
+                throw IllegalStateException("Unsupported data type in comparison expression: $arrowType")
+        }
+    }
+}
+
+private fun toString(v: Any?): String {
+    return when (v) {
+        is ByteArray -> String(v)
+        else -> v.toString()
+    }
+}
+
+private fun toBool(v: Any?): Boolean {
+    when (v) {
+        is Boolean -> v == true
+        is Number -> v == 1
+        else -> throw IllegalStateException()
+    }
 }
