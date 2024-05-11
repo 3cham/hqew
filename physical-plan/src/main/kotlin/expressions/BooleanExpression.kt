@@ -160,8 +160,8 @@ private fun toString(v: Any?): String {
 
 private fun toBool(v: Any?): Boolean {
     when (v) {
-        is Boolean -> v == true
-        is Number -> v == 1
+        is Boolean -> return v == true
+        is Number -> return v == 1
         else -> throw IllegalStateException()
     }
 }
