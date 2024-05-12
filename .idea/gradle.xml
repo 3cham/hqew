@@ -11,6 +11,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/datasource" />
             <option value="$PROJECT_DIR$/datatypes" />
+            <option value="$PROJECT_DIR$/fuzzer" />
             <option value="$PROJECT_DIR$/logical-plan" />
             <option value="$PROJECT_DIR$/physical-plan" />
           </set>
