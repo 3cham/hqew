@@ -33,7 +33,7 @@ class Fuzzer {
         return createRecordBatch(schema, columns)
     }
 
-    private fun createRecordBatch(schema: Schema, column: List<List<Any?>>): RecordBatch {
+    fun createRecordBatch(schema: Schema, column: List<List<Any?>>): RecordBatch {
         val arrowVectors = schema.fields.withIndex().map { field ->
             val fv = FieldVectorFactory.create(field.value.dataType, column[field.index].size)
 
