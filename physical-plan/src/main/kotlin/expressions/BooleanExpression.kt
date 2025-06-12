@@ -17,7 +17,7 @@ abstract class BooleanExpression(val l: Expression, val r: Expression): Expressi
         assert(ll.size() == rr.size())
 
         if (ll.getType() != rr.getType()) {
-            throw IllegalStateException("types of left and right operand in the expression must have same type")
+            throw IllegalStateException("types of left and right operand in the expression must have same type: ${ll.getType()} != ${rr.getType()}")
         }
 
         return compare(ll, rr)

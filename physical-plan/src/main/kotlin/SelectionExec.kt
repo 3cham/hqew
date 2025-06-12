@@ -57,6 +57,6 @@ class SelectionExec(
     }
 
     override fun toString(): String {
-        return "Filter: $expr"
+        return "SelectionExec: $expr"
     }
 }
