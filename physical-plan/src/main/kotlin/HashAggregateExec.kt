@@ -28,9 +28,25 @@ class HashAggregateExec (
             }
 
             (0 until batch.rowCount()).forEach { rowIndex ->
-                val rowKey = groupKeys.map{ it.getValue(rowIndex) }
-                TODO()
+                val rowKey = groupKeys.map{
+                    val value = it.getValue(rowIndex)
+                    when (value) {
+                        is ByteArray -> String(value)
+                        else -> value
+                    }
+                }
+                val accumulators = valMap.getOrPut(rowKey) {
+                    aggregateExpr.map { it.createAccumulator() }
+                }
+
+                // perform accumulation
+                accumulators.withIndex().forEach { accum ->
+                    val value = aggInputValues[accum.index].getValue(rowIndex)
+                    accum.value.accumulate(value)
+                }
             }
+
+
         }
 
         TODO()
