@@ -1,9 +1,9 @@
+package io.hqew.kquery.physical
+
 import io.hqew.kquery.datasource.CsvDataSource
 import io.hqew.kquery.datatypes.ArrowTypes
 import io.hqew.kquery.datatypes.Field
 import io.hqew.kquery.datatypes.Schema
-import io.hqew.kquery.physical.ScanExec
-import io.hqew.kquery.physical.SelectionExec
 import io.hqew.kquery.physical.expressions.ColumnExpression
 import io.hqew.kquery.physical.expressions.GtEqExpression
 import io.hqew.kquery.physical.expressions.LiteralDoubleExpression

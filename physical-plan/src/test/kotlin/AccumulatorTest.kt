@@ -1,3 +1,5 @@
+package io.hqew.kquery.physical
+
 import io.hqew.kquery.physical.expressions.MaxAccumulator
 import io.hqew.kquery.physical.expressions.MinAccumulator
 import kotlin.test.assertEquals

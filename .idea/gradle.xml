@@ -14,6 +14,7 @@
             <option value="$PROJECT_DIR$/fuzzer" />
             <option value="$PROJECT_DIR$/logical-plan" />
             <option value="$PROJECT_DIR$/physical-plan" />
+            <option value="$PROJECT_DIR$/query-planner" />
           </set>
         </option>
       </GradleProjectSettings>

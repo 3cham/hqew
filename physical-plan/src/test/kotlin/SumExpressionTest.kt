@@ -1,4 +1,5 @@
-import io.hqew.kquery.physical.expressions.MinAccumulator
+package io.hqew.kquery.physical
+
 import io.hqew.kquery.physical.expressions.SumAccumulator
 import org.junit.Test
 import org.junit.jupiter.api.TestInstance

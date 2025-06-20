@@ -1,15 +1,12 @@
-package io.hqew.kquery.kquery.physical
+package io.hqew.kquery.physical
+
 import io.hqew.kquery.datatypes.Schema
-import io.hqew.kquery.physical.HashAggregateExec
-import io.hqew.kquery.physical.ScanExec
 import org.junit.Test
 import org.junit.jupiter.api.TestInstance
-import readEmployeeTestData
 import kotlin.test.assertEquals
 import io.hqew.kquery.physical.expressions.MaxExpression
 import io.hqew.kquery.physical.expressions.ColumnExpression
 import io.hqew.kquery.datatypes.Field
-import org.apache.arrow.vector.types.pojo.ArrowType
 import io.hqew.kquery.datatypes.ArrowTypes
 
 

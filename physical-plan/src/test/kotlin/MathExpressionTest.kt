@@ -1,3 +1,5 @@
+package io.hqew.kquery.physical
+
 import io.hqew.kquery.datatypes.ArrowTypes
 import io.hqew.kquery.physical.expressions.AddExpression
 import io.hqew.kquery.physical.expressions.DivideExpression
