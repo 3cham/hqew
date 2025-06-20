@@ -5,8 +5,8 @@ import io.hqew.kquery.datatypes.ArrowVectorBuilder
 import io.hqew.kquery.datatypes.FieldVectorFactory
 import io.hqew.kquery.datatypes.RecordBatch
 import io.hqew.kquery.datatypes.Schema
-import org.apache.arrow.vector.types.pojo.ArrowType
 import kotlin.random.Random
+import org.apache.arrow.vector.types.pojo.ArrowType
 
 class Fuzzer {
     private val rand = Random(0)
@@ -16,13 +16,13 @@ class Fuzzer {
     /** Create a list of random values based on the provided data type */
     fun createValues(arrowType: ArrowType, n: Int): List<Any?> {
         return when (arrowType) {
-            ArrowTypes.Int8Type -> (0 until n).map{enhancedRandom.nextByte()}
-            ArrowTypes.Int16Type -> (0 until n).map{enhancedRandom.nextShort()}
-            ArrowTypes.Int32Type -> (0 until n).map{enhancedRandom.nextInt()}
-            ArrowTypes.Int64Type -> (0 until n).map{enhancedRandom.nextLong()}
-            ArrowTypes.FloatType -> (0 until n).map{enhancedRandom.nextFloat()}
-            ArrowTypes.DoubleType -> (0 until n).map{enhancedRandom.nextDouble()}
-            ArrowTypes.StringType -> (0 until n).map{enhancedRandom.nextString(rand.nextInt(64))}
+            ArrowTypes.Int8Type -> (0 until n).map { enhancedRandom.nextByte() }
+            ArrowTypes.Int16Type -> (0 until n).map { enhancedRandom.nextShort() }
+            ArrowTypes.Int32Type -> (0 until n).map { enhancedRandom.nextInt() }
+            ArrowTypes.Int64Type -> (0 until n).map { enhancedRandom.nextLong() }
+            ArrowTypes.FloatType -> (0 until n).map { enhancedRandom.nextFloat() }
+            ArrowTypes.DoubleType -> (0 until n).map { enhancedRandom.nextDouble() }
+            ArrowTypes.StringType -> (0 until n).map { enhancedRandom.nextString(rand.nextInt(64)) }
             else -> throw UnsupportedOperationException("Unsupported createValues for $arrowType")
         }
     }
@@ -34,18 +34,23 @@ class Fuzzer {
     }
 
     fun createRecordBatch(schema: Schema, column: List<List<Any?>>): RecordBatch {
-        val arrowVectors = schema.fields.withIndex().map { field ->
-            val fv = FieldVectorFactory.create(field.value.dataType, column[field.index].size)
+        val arrowVectors =
+                schema.fields.withIndex().map { field ->
+                    val fv =
+                            FieldVectorFactory.create(
+                                    field.value.dataType,
+                                    column[field.index].size
+                            )
 
-            val arrowVector = ArrowVectorBuilder(fv)
+                    val arrowVector = ArrowVectorBuilder(fv)
 
-            (0 until column[field.index].size).forEach {
-                arrowVector.set(it, column[field.index][it])
-            }
+                    (0 until column[field.index].size).forEach {
+                        arrowVector.set(it, column[field.index][it])
+                    }
 
-            arrowVector.setValueCount(column[field.index].size)
-            arrowVector.build()
-        }
+                    arrowVector.setValueCount(column[field.index].size)
+                    arrowVector.build()
+                }
 
         return RecordBatch(schema, arrowVectors)
     }
@@ -128,8 +133,9 @@ class EnhancedRandom(val rand: Random) {
     }
 
     fun nextString(len: Int): String {
-        return (0 until len).map { _ -> rand.nextInt(charPool.size) }
-            .map(charPool::get)
-            .joinToString("")
+        return (0 until len)
+                .map { _ -> rand.nextInt(charPool.size) }
+                .map(charPool::get)
+                .joinToString("")
     }
 }

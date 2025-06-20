@@ -1,8 +1,8 @@
 import io.hqew.kquery.physical.expressions.MaxAccumulator
 import io.hqew.kquery.physical.expressions.MinAccumulator
+import kotlin.test.assertEquals
 import org.junit.Test
 import org.junit.jupiter.api.TestInstance
-import kotlin.test.assertEquals
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class AccumulatorTest {

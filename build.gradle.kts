@@ -1,5 +1,3 @@
-import java.time.Instant
-
 plugins {
     java
     `java-library`
@@ -9,6 +7,7 @@ plugins {
 }
 
 group = "io.hqew.kquery"
+
 version = "0.1.0-SNAPSHOT"
 
 allprojects {
@@ -24,13 +23,9 @@ subprojects {
         plugin("com.diffplug.spotless")
     }
 
-    spotless {
-        kotlin {
-            ktfmt()
-        }
-    }
+    spotless { kotlin { ktfmt() } }
 
-    extra["isReleaseVersion"]  = !version.toString().endsWith("SNAPSHOT")
+    extra["isReleaseVersion"] = !version.toString().endsWith("SNAPSHOT")
 
     val implementation by configurations
     val testImplementation by configurations
@@ -54,12 +49,11 @@ subprojects {
         testImplementation(platform("org.junit:junit-bom:5.10.2"))
         testImplementation("org.junit.jupiter:junit-jupiter")
 
-        implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.20.0") // JVM dependency
+        implementation(
+                "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.20.0"
+        ) // JVM dependency
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
     }
 
-    java {
-        withJavadocJar()
-    }
-
+    java { withJavadocJar() }
 }
