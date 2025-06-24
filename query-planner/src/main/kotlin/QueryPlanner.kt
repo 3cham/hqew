@@ -65,6 +65,10 @@ class QueryPlanner {
             is Alias -> {
                 createPhysicalExpr(expr.expr, input)
             }
+            is Column -> {
+                val field = expr.toField(input)
+                ColumnExpression(input.schema().fields.indexOf(field))
+            }
             else -> throw UnsupportedOperationException("Logical expression type ${expr::class.simpleName} is not supported yet.")
         }
 }
